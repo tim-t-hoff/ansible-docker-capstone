@@ -5,9 +5,8 @@ A Senior Capstone project demonstrating automated infrastructure deployment usin
 ## Project Overview
 This project automates the deployment of a high-availability web cluster. It uses Ansible to orchestrate a custom Nginx Load Balancer and multiple web application nodes within a simulated environment.
 
-##
-
-**The Goal:** To demonstrate how Infrastructure-as-Code (IaC) can manage complex network topologies and service redundancy without the overhead of multiple physical or cloud-based virtual machines.
+## The Goal:
+To demonstrate how Infrastructure-as-Code (IaC) can manage complex network topologies and service redundancy without the overhead of multiple physical or cloud-based virtual machines.
 
 ## Key Features
 * **Infrastructure-as-Code:** Full lifecycle management from system bootstrapping to service deployment.
