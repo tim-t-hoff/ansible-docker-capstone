@@ -1,0 +1,18 @@
+---
+- name: Create a project directory                          # 1
+  ansible.builtin.file:
+    path: "/tmp/{{ container_name }}"
+    state: directory
+    mode: '0755'
+
+- name: Upload the docker-compose file                      # 2
+  ansible.builtin.template:
+    src: web-apps.conf.j2
+    dest: "/tmp/{{ container_name }}/docker-compose.yml"
+    mode: '0644'
+
+- name: Start the web containers                            # 3
+  community.docker.docker_compose_v2:
+    project_src: "/tmp/{{ container_name }}"
+    project_name: "{{ container_name }}"
+    state: present

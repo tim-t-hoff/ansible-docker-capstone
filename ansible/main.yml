@@ -1,0 +1,44 @@
+---
+- name: Setup Infrastructure            # 1
+  hosts: all
+  become: true
+  tasks:
+    - name: Install Docker on all nodes
+      ansible.builtin.import_tasks: tasks/docker-install.yml
+  tags: docker_install
+
+- name: Deploy Load Balancer            # 2
+  hosts: load_balancer
+  become: true
+  tasks:
+    - name: Setup LB
+      ansible.builtin.import_tasks: tasks/deploy-lb.yml
+  tags: load_balancer
+
+- name: Deploy Web Nodes                # 3
+  hosts: web_nodes
+  become: true
+  tasks:
+    - name: Deploy Web Nodes
+      ansible.builtin.import_tasks: tasks/deploy-web-nodes.yml
+  tags: web_nodes
+
+- name: Final Cleanup                   # 4
+  hosts: all
+  become: true
+  tasks:
+    - name: Remove unused Docker data
+      community.docker.docker_prune:
+        containers: true
+        images: true
+        networks: true
+        volumes: false
+  tags: cleanup
+
+# - name: Install Docker
+#   hosts: localhost
+#   become: true
+#   tasks:
+#     - name: Install Docker on local machine
+#       ansible.builtin.import_tasks: tasks/docker-install.yml
+#   tags: docker_install_local

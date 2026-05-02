@@ -1,0 +1,40 @@
+services:
+  lb_node:
+    build: .
+    container_name: lb_node
+    privileged: true
+    ports:
+      - "2222:22"
+    networks:
+    - "ansible-net"
+    restart: "no"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  app_node1:
+    build: .
+    container_name: app_node1
+    privileged: true
+    ports:
+      - "2223:22"
+    networks:
+    - "ansible-net"
+    restart: "no"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  app_node2:
+    build: .
+    container_name: app_node2
+    privileged: true
+    ports:
+      - "2224:22"
+    networks:
+    - "ansible-net"
+    restart: "no"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+networks:
+  ansible-net:
+    driver: bridge

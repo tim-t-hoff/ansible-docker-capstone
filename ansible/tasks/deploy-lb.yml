@@ -1,0 +1,47 @@
+---
+# Prepare Infrastructure
+- name: Create LB directory                       # 1
+  ansible.builtin.file:
+    path: /docker/lb
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Create Nginx Config for Image Build       # 2
+  ansible.builtin.template:
+    src: lb-nginx.conf.j2
+    dest: /docker/lb/nginx.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+# Make the LB Image
+- name: Create LB Dockerfile                      # 3
+  ansible.builtin.copy:
+    dest: /docker/lb/Dockerfile
+    content: |
+      FROM nginx:latest
+      COPY nginx.conf /etc/nginx/nginx.conf
+    mode: '0644'
+
+- name: Build Custom LB Image                     # 4
+  community.docker.docker_image:
+    name: custom_lb
+    build:
+      path: /docker/lb
+    source: build
+    force_source: true
+
+# Deploy the LB Container
+- name: Start LB                                  # 5
+  community.docker.docker_container:
+    name: lb
+    image: custom_lb
+    state: started
+    recreate: true
+    restart_policy: always
+    ports:
+      - "8085:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock

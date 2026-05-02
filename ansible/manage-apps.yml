@@ -1,0 +1,24 @@
+---
+- name: Manage Web Applications
+  hosts: web_nodes
+  become: true
+  gather_facts: false
+  vars:
+    target_state: started
+    state_mapping:
+      start: started
+      stop: stopped
+      started: started
+      stopped: stopped
+
+  tasks:
+    - name: "Ensure container state is on or off for the given app"
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        state: "{{ state_mapping[target_state] | default(target_state) }}"
+      when: (target_app is not defined) or (container_name == target_app)
+
+    - name: "Display final status for {{ container_name }}"
+      ansible.builtin.debug:
+        msg: "Container {{ container_name }} is now {{ state_mapping[target_state] | default(target_state) }}"
+      when: (target_app is not defined) or (container_name == target_app)

@@ -1,0 +1,14 @@
+services:
+  {{ container_name }}:
+    image: nginx
+    container_name: "{{ container_name }}"
+    ports:
+      - "{{ web_port }}:80"
+    command: /bin/sh -c "echo '<h1>Hello from {{ container_name }}</h1>' > /usr/share/nginx/html/index.html && nginx -g 'daemon off;'"
+    networks:
+      - no-ipv6-net
+
+networks:
+  no-ipv6-net:
+    enable_ipv6: false
+    driver: bridge
