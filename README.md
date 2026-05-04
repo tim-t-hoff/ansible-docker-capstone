@@ -48,26 +48,27 @@ Note: Remember the path to your public key (usually ~/.ssh/id_rsa.pub).
 
 This is the machine where the simulated lab will live.
 
-    Docker Requirement: The target machine must have Docker and the Docker Compose plugin installed before you begin.
+Docker Requirement: The target machine must have Docker and the Docker Compose plugin installed before you begin.
 
-    SSH Configuration:
+SSH Configuration:
 
-        Copy your public key string from your Control Machine.
+Copy your public key string from your Control Machine.
 
-        Open remote-server/Dockerfile in this repository.
+Open remote-server/Dockerfile in this repository.
 
-        Find the RUN echo "ssh-rsa ..." line and replace the example string with your actual public key.
-        This allows the Ansible Control Machine to "log in" to the simulated containers.
+Find the RUN echo "ssh-rsa ..." line and replace the example string with your actual public key. This allows the Ansible Control Machine to "log in" to the simulated containers.
 
 3. Project Configuration
 
 Inventory: Open inventory.ini and update ansible_host with the actual IP address of your Target Remote Server.
 
-    Connectivity Test: Ensure you can ping the target server from your control machine.
+Connectivity Test: Ensure you can ping the target server from your control machine.
+
 ## Execution Flow
-1.  **Initialize Lab:** `docker compose up -d` (This creates the simulated "servers").
+1.  **Initialize Lab:** `docker compose up -d` On the remote server. (This creates the simulated servers).
 2.  **Deploy Stack:** `ansible-playbook main.yml` (This configures the servers and starts the apps).
-3.  **Manage Apps:** Use `ansible-playbook manage-apps.yml -e "target_state=stop"` to test failover.
+3. **Test Load Balancer:** Use `curl [apps ip address]` repreatedly to test the load balancer. 
+4. **Test Apps:** Use `ansible-playbook manage-apps.yml -e "target_app=[app_name] target_state=stop"` to test failover.
 
 ## Post-Deployment Management
 
