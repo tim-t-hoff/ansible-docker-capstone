@@ -20,7 +20,7 @@ To demonstrate how Infrastructure-as-Code (IaC) can manage complex network topol
 - **Load Balancer:** Custom Nginx build with dynamic upstream configuration.
 
 ## Architecture Diagram
-![Architecture Diagram](./media/Automated%20Container%20Deployment%20Architecture%20Diagram.jpg)
+![Architecture Diagram](./media/Automated-Container-Deployment-Architecture-Diagram.png)
 
 ## Setup & Prerequisites
 This project requires a Control Machine (where Ansible is installed) and a Target Host (where the lab environment will run).
